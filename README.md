@@ -13,6 +13,59 @@ I make no guarantees about the performance of this library in a production envir
 |minified filesize (no server-side zipping) | 5.04kb |
 |LOC (lines of code)|~350 (verbose)|
 
+# QuickStart
+1. Download `obtuse-components.min.js`.
+2. In the root directory of your site, add a folder named `components`.
+3. Put the `obtuse-components.min.js` file in the new `components` folder.
+4. Create a new directory called `text-echo` in the `components` folder.
+5. Place three files in the `text-echo` folder named `text-echo.html`, `text-echo.css`, and `text-echo.js`.
+6. Add the following into the `text-echo.html` file
+    - ```html
+      <template>
+      <p class="content"></p>
+      </template>
+      ```
+7. Add the following into the `text-echo.js` file
+    - ```js
+      import { ObtuseComponent } from '../obtuse-components.min.js';
+      export default class TextEcho extends ObtuseComponent
+      {
+          static get observedAttributes() { return ['to-echo']; }
+          _init()
+          {
+              this.$content = this.shadowRoot.querySelector('p');
+              this.$content.innerHTML = this.getAttribute('to-echo');
+          }
+          attributeChangedCallback(name, oldValue, newValue)
+          {
+              if(!this.__isConnected) { return; }
+              if(name == 'to-echo')
+              {
+                  this.$content.innerHTML = newValue;
+              }
+          }
+      }
+      ```
+8. Add the following into the `text-echo.css` file
+    - ```css
+      p { color: red; }
+      ```
+9. On the page where you want to use the custom element, add these snippets to the page's script
+    - ```js
+      import { ObtuseComponents } from '/components/obtuse-components.min.js';
+      ```
+    - ```js
+      let components = 
+      [
+          'TextEcho'
+      ];
+      ObtuseComponents.register(components);
+      ```
+10. On the page where you want to use the custom element, use the tag `text-echo`, like so:
+    - ```html
+      <text-echo to-echo="Hello, World!"></text-echo>
+      ```
+
 # Deployment
 The only file that is needed for this library is the `obtuse-components.js` file or the `obtuse-components.min.js` file for the minified version.
 

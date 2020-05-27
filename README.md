@@ -1,5 +1,6 @@
 # obtuse-components
-Vanilla JS \[ES6\] web components that use a similar file structure as Angular
+Vanilla JS \[ES6\] web components that use a similar file structure as Angular  
+See a demo of this library in action on [GitHub Pages](https://the1076.github.io/obtuse-components/)!
 
 # Disclaimer
 This library is an actively developed helper library that is tailored to specific projects. Changes to the codebase may come without warning or documentation. Please fork the project if you would like to use the library in your own work.  
@@ -28,20 +29,20 @@ This library, like Angular, is convention-based. While most things are configura
 By default, the library will expect that there is a folder in the `:root` path named `components` and that path (`:root/components/`) will contain a component manifest file named `manifest.json`.
 
 If you would like to change where the manifest is located, simply use the `manifestPath` static property of the `ObtuseComponents` object to update the manifest path.
-```
+```js
 ObtuseComponents.manifestPath = './my-custom/path/to-components/manifest.json';
 // OR
 ObtuseComponants.manifestPath = '/component-list.json';
 ```
 
 Likewise, if you would like to change the `components` path, update the `componentsDirectory` static property of the `ObtuseComponents` object.
-```
+```js
 ObtuseComponents.componentsDirectory = './my-custom/path/to-components/manifest.json';
 ```
 
 Once your paths are set up, the only thing you need to do to load your components is to use the static `register()` method on the `ObtuseComponents` object.  
 If you call the `register()` method with no parameters, it will load the components from your component manifest. However, you can also call the method while passing in an array of component definitions, while will make the library ignore the manifest and only load those components that are defined in the parameter array.
-```
+```js
 ObtuseComponents.register(); // this loads component definitions from the manifest
 
 let components = 
@@ -74,7 +75,7 @@ Components need to be defined with five properties:
 With those pieces of information, a component can be loaded from external files, registered with a page, and initialized.
 
 If you would like to explicitly define those properties, you can do with the following structure:
-```
+```js
 {
     componentClassName: "", // string; name of the component's class
     tagName: "", // string; what you want to use in the DOM
@@ -85,7 +86,7 @@ If you would like to explicitly define those properties, you can do with the fol
 ```
 
 In addition to explicitly defining where the paths for your template and styles are, you can also use the `template` and `style` properties to directly define those values.
-```
+```js
 {
     componentClassName: "",
     template: "", //string; a string of html that will be used as your component's template
@@ -99,7 +100,7 @@ Note that these properties will override any pathing that would lookup template 
 Rather than expecting well-formed definitions for each component, the `obtuse-components` library will allow for simplified definitions, as well. By using convention and structure, a component can be loaded from a single text string.
 
 In example, consider this component
-```
+```js
 export default class MyComponent extends ObtuseComponent
 {
     ...
@@ -113,7 +114,7 @@ If that component exists in a structure like this:
   - my-compoennt.js
 
 That would allow the library to load the component with only the class name as a definition.
-```
+```js
 let components = ["MyComponent"];
 ObtuseComponents.register(components);
 ```
@@ -132,7 +133,7 @@ If you would like to intercept this call, you will need two things on your custo
 - A static getter property named `observedAttributes` that holds an array of attribute names. The callback will only fire when attributes are changed that have the same name as a string in the `observedAttributes` array.
 
 In example:
-```
+```js
 export default class MyComponent
 {
     static get observedAttributes()

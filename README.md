@@ -2,18 +2,18 @@
 Vanilla JS \[ES6\] web components that use a similar file structure as Angular  
 See a demo of this library in action on [GitHub Pages](https://the1076.github.io/obtuse-components/)!
 
-# Disclaimer
+## Disclaimer
 This library is an actively developed helper library that is tailored to specific projects. Changes to the codebase may come without warning or documentation. Please fork the project if you would like to use the library in your own work.  
 I make no guarantees about the performance of this library in a production environment.
 
-# Statistics
+## Statistics
 | | |
 |---|---|
 |Filesize (no server-side zipping) | 10kb |
 |minified filesize (no server-side zipping) | 5.04kb |
 |LOC (lines of code)|~350 (verbose)|
 
-# QuickStart
+## QuickStart
 1. Download `obtuse-components.min.js`.
 2. In the root directory of your site, add a folder named `components`.
 3. Put the `obtuse-components.min.js` file in the new `components` folder.
@@ -66,7 +66,7 @@ I make no guarantees about the performance of this library in a production envir
       <text-echo to-echo="Hello, World!"></text-echo>
       ```
 
-# Deployment
+## Deployment
 The only file that is needed for this library is the `obtuse-components.js` file or the `obtuse-components.min.js` file for the minified version.
 
 The file uses ES6 exports so it can be imported like so:
@@ -76,7 +76,7 @@ import { ObtuseComponents, ObtuseComponent, ObtuseComponentDefinition } from '/p
 
 It is not recommended to load the file from your html, as the library uses other ES6 features, so there should be no reason that loading from HTML would be required. If you have a niche case, though, it should be possible if you remove all of the `export` statements from the `obtuse-components.js` file.
 
-# Usage
+## Usage
 This library, like Angular, is convention-based. While most things are configurable, the defaults rely heavily on following defined practices.
 
 By default, the library will expect that there is a folder in the `:root` path named `components` and that path (`:root/components/`) will contain a component manifest file named `manifest.json`.
@@ -117,7 +117,7 @@ let components =
 ObtuseComponents.register(components); // this loads the components listed in the "components" array.
 ```
 
-## Component Definitions
+### Component Definitions
 Components need to be defined with five properties:
 - Class name
 - Tag name
@@ -149,7 +149,7 @@ In addition to explicitly defining where the paths for your template and styles 
 
 Note that these properties will override any pathing that would lookup template or style definitions.
 
-## Simplified Definitions
+### Simplified Definitions
 Rather than expecting well-formed definitions for each component, the `obtuse-components` library will allow for simplified definitions, as well. By using convention and structure, a component can be loaded from a single text string.
 
 In example, consider this component
@@ -174,12 +174,20 @@ ObtuseComponents.register(components);
 
 The tag name will be a kebab-case version of the class name (so `<my-component></my-component>`) and the file names and path, being kebab-case, will also be able to be found and loaded because of the naming structure. So, by following that convention, loading components can be done with only the class name.
 
-### useShadowRoot
+#### [async] _init()
+The `_init()` method is a reserved method on all objects extended from the `ObtuseComponent` class. This method is run directly after the object is loaded, to allow any component setup to take place. By overriding this method on child objects, you can do direct object initialization.  
+This function may be asynchronous. The parent code will be awaiting this function.
+
+This method is optional, so you do not need to include it in your components. If your components require initialization that can't run when the `_init()` method is run, you can listen for the 'onconnected' event, which is fired when the component has finished being imported, or you can directly reference the object by using the component's class name as a key to index into the `ObtuseComponents.components` static property.
+
+#### useShadowRoot
 By default, the library will attach all templates to the shadow root of your custom element. If you would like the content of your custom element to be in the light DOM, just set the static `useShadowRoot` property on the `ObtuseComponents` object to `false`.
 
 When appending to the light DOM, all component styles will be added into the loading page's head tag. This is gated to ensure it only happens once.
 
-### attributeChangedCallback handler
+At the moment, there is no way to specify shadowRoot usage on a component-by-component basis.
+
+#### attributeChangedCallback handler
 When an attribute is changed on a custom component's DOM element, an `attributeChanged` event is fired which is handled by an `attributeChangedCallback` on the default `ObtuseComponent`.  
 If you would like to intercept this call, you will need two things on your custom component
 - A method named `attributeChangedCallback`. As this is standard functionality for web components, this method MUST be named `attributeChangedCallback`.
@@ -215,7 +223,7 @@ export default class MyComponent
 }
 ```
 
-# Notes
+## Notes
 - Default component directory is `:root/components/`.
 - By default, the library will expect components in the following format:
   - component-name \[folder\]
@@ -226,7 +234,7 @@ export default class MyComponent
 - By default, the library will log any attribute changes to the console. It is expected that if you want to trigger functionality when attributes are changed, you will need to implement your own `attributeChangedCallback` method on your components.
 - This library curries all of your web components at the time of registration. The external files are only loaded once, but they are ALL loaded, upfront. A newer version of this library will probably be made to defer that loading to be 'just-in-time', but it currently just loads everything at the beginning.
 
-# FAQ
+## FAQ
 - Isn't it easier to forgo the file-structure formatting, and just use vanilla Web Components without the Angular-inspired constraints?
   - Yes! At least, in my experience! For most things, I can't recommend using this library ("obtuse" isn't ONLY a reference to Angular...). In some situations, though, I have found that this type of file structuring makes for a very team-friendly approach to component development. It's kind of just immediately obvious where the separation of concerns is, and how one would go about continuing development on a component that they may have never even heard of before. So that's worth... well, it's worth what it's worth.  
   As with anything, this library has a trade-off. We sacrifice a tiny bit of speed and data overhead (size of the library) for structural clarity and development modularity.

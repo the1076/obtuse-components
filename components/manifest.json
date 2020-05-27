@@ -1,0 +1,7 @@
+[
+    "TextInput",
+    "NumberInput",
+    { "componentClassName": "TextareaInput", "basePath": "/components/sub-components/textarea-input/" },
+    { "componentClassName": "RandomName", "tagName": "not-advised", "htmlPath": "/components/crazy-component/template.html", "stylePath": "/components/crazy-component/style.css", "scriptPath": "/components/crazy-component/app.js" },
+    { "componentClassName": "SelectInput", "template": "<template><label class=\"field-group select\"><span class=\"title\">Title</span><span class=\"content\"><select><option>Option 1</option><option>Option 2</option><option>Option 3</option></select></span></label></template>", "style": "select{ font-size: 2em; }"}
+]
